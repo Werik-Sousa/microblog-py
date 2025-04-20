@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Microblog</title>
 </head>
 <body>
     <nav class="navbar">
         <a href="/index">Home</a>
         <a href="/login">login</a>
+        <a href="/usuarios/create">Cadastrar</a>
         <a href="/contato">Contato</a>
     </nav>
 
     {% block conteudo %}
     {% endblock %}
-
+    
 </body>
 </html>
