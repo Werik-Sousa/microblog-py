@@ -5,7 +5,7 @@ from flask import request, redirect, flash
 
 bp_usuarios = Blueprint('usuarios', __name__)
 
-@bp_usuarios.route('/create')
+@bp_usuarios.route('/create', methods=['GET', 'POST'])
 def create():
 
     if request.method == 'GET':
