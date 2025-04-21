@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+        <ul>
+            {% for u in usuarios %}
+                <li>{{ u.nome }}</li>
+            {% endfor %}
+        </ul>
+        <ul>
+            {% for u in usuarios %}
+                <li>{{ u.email }}</li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
