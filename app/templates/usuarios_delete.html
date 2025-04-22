@@ -1,18 +1,35 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-
-{% set mensagens = get_flashed_messages() %}
+<div class="container mt-5">
+    {% set mensagens = get_flashed_messages() %}
     {% if mensagens %}
-        <ul>
-            {% for mensagem in mensagens %}
-                <li>{{ mensagem }}</li>
-            {% endfor %}
-        </ul>
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                <ul class="mb-0">
+                    {% for mensagem in mensagens %}
+                        <li>{{ mensagem }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
-        <h2>Confrime se deseja excluir {{usuario.nome}}</h2>
+
+    <div class="card p-4">
+        <h2 class="mb-4">
+            <i class="bi bi-trash-fill text-danger"></i> Confirme se deseja excluir <strong>{{ usuario.nome }}</strong>
+        </h2>
         <form method="post" action="/usuarios/delete/{{ usuario.id }}">
-            <input type="submit" value="Excluir">
-            <a href="{{ url_for('usuarios.list') }}">Cancelar</a>
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-check-circle-fill me-1"></i> Confirmar Exclusão
+                </button>
+                <a href="{{ url_for('usuarios.list') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle-fill me-1"></i> Cancelar
+                </a>
+            </div>
         </form>
-    {% endblock %}
+    </div>
+</div>
+{% endblock %}

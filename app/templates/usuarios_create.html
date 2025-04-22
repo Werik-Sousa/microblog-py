@@ -2,26 +2,41 @@
 
 {% block conteudo %}
 
-{% set mensagens = get_flashed_messages() %}
+<div class="container mt-5">
+    {% set mensagens = get_flashed_messages() %}
     {% if mensagens %}
-        <ul>
+        <div class="alert alert-warning" role="alert">
             {% for mensagem in mensagens %}
-                <li>{{ mensagem }}</li>
+                <div>{{ mensagem }}</div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
-<form method="post">
-    <div>
-      <label>Nome</label>
-      <input type="text" name="nome" placeholder="Nome" >
-      <label>Email</label>
-      <input type="text" name="email" placeholder="Email" >
-      <label>Senha</label>
-      <input type="password" name="senha" placeholder="Senha" >
-      <label>Confirmação de Senha</label>
-      <input type="password" name="csenha" placeholder="Confirmação de Senha" >
-    </div>
-    <button type="submit" value="Cadastrar">Cadastrar</button>
-  </form>
 
-    {% endblock %}
+    <form method="post" class="card p-4 shadow-sm">
+        <h2 class="mb-4">Cadastro de Usuário</h2>
+
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" id="nome" name="nome" class="form-control" value="{{nome or ''}}" placeholder="Nome">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" id="email" name="email" class="form-control" value="{{email or ''}}" placeholder="Email">
+        </div>
+
+        <div class="mb-3">
+            <label for="senha" class="form-label">Senha</label>
+            <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha">
+        </div>
+
+        <div class="mb-3">
+            <label for="csenha" class="form-label">Confirmação de Senha</label>
+            <input type="password" id="csenha" name="csenha" class="form-control" placeholder="Confirmação de Senha">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+    </form>
+</div>
+
+{% endblock %}

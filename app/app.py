@@ -20,6 +20,6 @@ def create_app():
 
     # Blueprints
     app.register_blueprint(bp_usuarios, url_prefix='/usuarios')
-    app.register_blueprint(bp_routes)
+    app.register_blueprint(bp_routes , url_prefix='/')
 
     return app
