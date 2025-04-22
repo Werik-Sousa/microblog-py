@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% set mensagens = get_flashed_messages() %}
+    {% if mensagens %}
+        <ul>
+            {% for mensagem in mensagens %}
+                <li>{{ mensagem }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+<form method="post" action="/usuarios/update/{{ usuario.id }}">
+    <div>
+      <label>Nome</label>
+      <input type="text" name="nome" placeholder="Nome" value="{{ usuario.nome }}" >
+      <label>Email</label>
+      <input type="text" name="email" placeholder="Email" value="{{ usuario.email }}" >
+      <label>Senha</label>
+      <input type="password" name="senha" placeholder="Senha" >
+      <label>Confirmação de Senha</label>
+      <input type="password" name="csenha" placeholder="Confirmação de Senha" >
+    </div>
+    <button type="submit" value="Cadastrar">Cadastrar</button>
+  </form>
+
+    {% endblock %}
