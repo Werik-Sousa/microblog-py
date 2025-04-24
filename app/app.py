@@ -1,12 +1,17 @@
 from flask import Flask, render_template
 from app.database import db
 from flask_migrate import Migrate
-from datetime import datetime  # <-- precisa importar
+from datetime import datetime
+import os
 
 from app.routers.usuarios import bp_usuarios
 
 def create_app():
     app = Flask(__name__)
+
+    if __name__ == 'main':
+        port = int(os.getenv('PORT'), 5000)
+        app.run(host='0.0.0.0', port=port)
     
     # Configurações
     conexao = 'sqlite:///meubanco.sqlite'
