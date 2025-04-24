@@ -1,11 +1,16 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from app.database import db
 from app.models import Usuario
 from datetime import datetime
-
 from flask import request, redirect, flash, url_for
+from app.decorators import login_required
 
 bp_usuarios = Blueprint('usuarios', __name__)
+
+@bp_usuarios.route('/')
+@bp_usuarios.route('/index')
+def index():
+    return render_template('index.html')
 
 def validar_usuario(nome, email, senha, csenha):
     if not nome or not email or not senha:
@@ -16,11 +21,30 @@ def validar_usuario(nome, email, senha, csenha):
         return 'Email já cadastrado'
     return None
 
+@bp_usuarios.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        senha = request.form['senha']
+
+        usuario = Usuario.query.filter_by(email=email, senha=senha).first()
+
+        if usuario:
+            session['usuario_id'] = usuario.id
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('usuarios.list'))
+        else:
+            flash('Usuário não encontrado. Por favor, cadastre-se.', 'warning')
+            return redirect(url_for('usuarios.create'))  # rota de cadastro
+
+    return render_template('login.html')
+
+
 @bp_usuarios.route('/create', methods=['GET', 'POST'])
 def create():
 
     if request.method == 'GET':
-        return render_template('usuarios_create.html', now=datetime.now())
+        return render_template('usuarios_create.html')
 
     if request.method == 'POST':
         nome = request.form.get('nome')
@@ -31,20 +55,25 @@ def create():
         erro = validar_usuario(nome, email, senha, csenha)
         if erro:
             flash(erro)
-            return render_template('usuarios_create.html', nome=nome, email=email, now=datetime.now())
+            return render_template('usuarios_create.html', nome=nome, email=email)
 
     usuario = Usuario(nome, email, senha)
     db.session.add(usuario)
     db.session.commit()
 
     flash('Usuário criado com sucesso!')
-    return redirect('/login')   
+    return redirect(url_for('usuarios.login')) 
 
 #list    
 @bp_usuarios.route('/list')
+@login_required
 def list():
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para ver a lista de usuários.', 'danger')
+        return redirect(url_for('usuarios.login'))
+
     usuarios = Usuario.query.all()
-    return render_template('usuarios_list.html', usuarios=usuarios, now=datetime.now())
+    return render_template('usuarios_list.html', usuarios=usuarios)
 
 #update  
 @bp_usuarios.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -52,7 +81,7 @@ def update(id):
     usuario = Usuario.query.get_or_404(id)
 
     if request.method == 'GET':
-        return render_template('usuarios_update', usuario=usuario, now=datetime.now())
+        return render_template('usuarios_update.html', usuario=usuario)
 
     if request.method == 'POST':
         nome = request.form.get('nome')
@@ -74,7 +103,7 @@ def delete(id):
     usuario = Usuario.query.get_or_404(id)
 
     if request.method == 'GET':
-        return render_template('usuarios_delete.html', usuario=usuario, now=datetime.now())
+        return render_template('usuarios_delete.html', usuario=usuario)
 
     if request.method == 'POST':
         db.session.delete(usuario)

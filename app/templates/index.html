@@ -1,7 +1,44 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-    <h1>aprendendo...mas ta dificil!</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Projeto de Cadastro de Usuários</h1>
 
+                    <p class="card-text">
+                        Este projeto foi desenvolvido com o objetivo de demonstrar habilidades práticas em desenvolvimento web utilizando as seguintes tecnologias:
+                    </p>
+
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item">Linguagem: Python</li>
+                        <li class="list-group-item">Framework: Flask</li>
+                        <li class="list-group-item">Banco de Dados: SQLite</li>
+                        <li class="list-group-item">Template Engine: Jinja2</li>
+                        <li class="list-group-item">Estilização: Bootstrap 5</li>
+                    </ul>
+
+                    <p class="card-text">
+                        Para acessar a lista de usuários cadastrados e utilizar as funções de <strong>editar</strong> e <strong>excluir</strong> usuários, é necessário primeiro realizar um cadastro e depois efetuar o login.
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Importante:</strong> Os dados utilizados no cadastro devem ser <strong>fictícios</strong>, pois este sistema é apenas para fins de demonstração e aprendizado.
+                    </p>
+
+                    <div class="text-center">
+                        <a href="/create" class="btn btn-primary">Cadastrar Novo Usuário</a>
+                        <a href="/login" class="btn btn-success">Fazer Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
     {% endblock %}

@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card p-5 shadow-lg rounded-5">
+        <h2 class="text-center mb-4 fw-bold text-primary">Bem-vindo ao <span class="cobra">COBRA</span></h2>
 
-    {% set mensagens = get_flashed_messages() %}
-    {% if mensagens %}
-        <ul>
-            {% for mensagem in mensagens %}
-                <li>{{ mensagem }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        {% set mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+                {% for mensagem in mensagens %}
+                    <div>{{ mensagem }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <form action="/autenticar" method="post">
-        Usuario: <input type="text" name="usuario"><br/>
-        Senha: <input type="text" name="senha"><br/>
-        <button type="submit">Entrar</button>
+        <form action="{{ url_for('usuarios.login') }}" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" name="email" placeholder="E-mail">
+                <label for="usuario">E-mail</label>
+            </div>
 
-    </form>
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control rounded-4" name="senha" placeholder="Senha">
+                <label for="senha">Senha</label>
+            </div>
 
-    {% endblock %}
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary rounded-4 shadow-sm py-2">Entrar</button>
+            </div>
+
+            <div class="text-center">
+                <small class="text-muted">Não tem uma conta? <a href="/create" class="text-primary">Cadastre-se</a></small>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

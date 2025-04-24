@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 from app.database import db
 from flask_migrate import Migrate
+from datetime import datetime  # <-- precisa importar
 
 from app.routers.usuarios import bp_usuarios
-from app.routers.routes import bp_routes
 
 def create_app():
     app = Flask(__name__)
@@ -17,9 +17,11 @@ def create_app():
     # Extensões
     db.init_app(app)
     migrate = Migrate(app, db)
+    
+    @app.context_processor
+    def inject_now():
+        return {'now': datetime.now()}
 
     # Blueprints
-    app.register_blueprint(bp_usuarios, url_prefix='/usuarios')
-    app.register_blueprint(bp_routes , url_prefix='/')
-
+    app.register_blueprint(bp_usuarios)
     return app

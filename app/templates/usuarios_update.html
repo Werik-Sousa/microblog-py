@@ -2,26 +2,31 @@
 
 {% block conteudo %}
 
-{% set mensagens = get_flashed_messages() %}
+<div class="container mt-5">
+    {% set mensagens = get_flashed_messages() %}
     {% if mensagens %}
-        <ul>
+        <div class="alert alert-info" role="alert">
             {% for mensagem in mensagens %}
-                <li>{{ mensagem }}</li>
+                <div>{{ mensagem }}</div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
-<form method="post" action="/usuarios/update/{{ usuario.id }}">
-    <div>
-      <label>Nome</label>
-      <input type="text" name="nome" placeholder="Nome" value="{{ usuario.nome }}" >
-      <label>Email</label>
-      <input type="text" name="email" placeholder="Email" value="{{ usuario.email }}" >
-      <label>Senha</label>
-      <input type="password" name="senha" placeholder="Senha" >
-      <label>Confirmação de Senha</label>
-      <input type="password" name="csenha" placeholder="Confirmação de Senha" >
-    </div>
-    <button type="submit" value="Cadastrar">Cadastrar</button>
-  </form>
 
-    {% endblock %}
+    <form method="post" action="/update/{{ usuario.id }}" class="card p-4 shadow-sm form-container">
+        <h2 class="mb-4 text-center">Atualizar Usuário</h2>
+
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" id="nome" name="nome" class="form-control" placeholder="Nome" value="{{ usuario.nome }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="{{ usuario.email }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+    </form>
+</div>
+
+{% endblock %}
