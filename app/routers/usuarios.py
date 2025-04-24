@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, session
 from app.database import db
 from app.models import Usuario
-from datetime import datetime
 from flask import request, redirect, flash, url_for
 from app.decorators import login_required
 
@@ -21,21 +20,23 @@ def validar_usuario(nome, email, senha, csenha):
         return 'Email já cadastrado'
     return None
 
-@bp_usuarios.route('/login', methods=['GET', 'POST'])
+@bp_usuarios.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']
 
         usuario = Usuario.query.filter_by(email=email, senha=senha).first()
-
+        if not email or not senha:
+            flash('Preencha todos os campos', 'warning')
+            return redirect(url_for('usuarios.login'))
         if usuario:
             session['usuario_id'] = usuario.id
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('usuarios.list'))
         else:
             flash('Usuário não encontrado. Por favor, cadastre-se.', 'warning')
-            return redirect(url_for('usuarios.create'))  # rota de cadastro
+            return redirect(url_for('usuarios.create'))
 
     return render_template('login.html')
 
@@ -61,7 +62,7 @@ def create():
     db.session.add(usuario)
     db.session.commit()
 
-    flash('Usuário criado com sucesso!')
+    flash('Usuário criado com sucesso!', 'success')
     return redirect(url_for('usuarios.login')) 
 
 #list    
@@ -69,7 +70,7 @@ def create():
 @login_required
 def list():
     if 'usuario_id' not in session:
-        flash('Você precisa estar logado para ver a lista de usuários.', 'danger')
+        flash('Você precisa estar logado para ver a lista de usuários.', 'warning')
         return redirect(url_for('usuarios.login'))
 
     usuarios = Usuario.query.all()
@@ -88,13 +89,13 @@ def update(id):
         email = request.form.get('email')
 
         if not nome or not email:
-            flash('Preencha todos os campos')
+            flash('Preencha todos os campos', 'warning')
             return redirect(url_for('usuarios.update', id=id))
 
         usuario.nome = nome
         usuario.email = email
         db.session.commit()
-        flash('Dados atualizados com sucesso!')
+        flash('Dados atualizados com sucesso!', 'success')
         return redirect(url_for('usuarios.list'))
 
 #delete
@@ -108,6 +109,11 @@ def delete(id):
     if request.method == 'POST':
         db.session.delete(usuario)
         db.session.commit()
-        flash('Dados excluidos com sucesso!')
+        flash('Dados excluidos com sucesso!', 'success')
         return redirect(url_for('usuarios.list'))
 
+@bp_usuarios.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    flash('Você saiu da sua conta.', 'warning')
+    return redirect(url_for('usuarios.login'))
