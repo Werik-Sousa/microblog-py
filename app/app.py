@@ -8,10 +8,6 @@ from app.routers.usuarios import bp_usuarios
 
 def create_app():
     app = Flask(__name__)
-
-    if __name__ == 'main':
-        port = int(os.getenv('PORT'), 5000)
-        app.run(host='0.0.0.0', port=port)
     
     # Configurações
     conexao = 'sqlite:///meubanco.sqlite'
@@ -30,3 +26,5 @@ def create_app():
     # Blueprints
     app.register_blueprint(bp_usuarios)
     return app
+
+app = create_app()
